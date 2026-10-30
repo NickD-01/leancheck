@@ -1,0 +1,51 @@
+id: prisma/unbounded-select
+pack: prisma
+category: perf
+severity: medium
+confidence: medium
+message: "findMany has no take, so it loads every matching row."
+fixHint: "Add take (and skip or a cursor), or aggregate in the database with count, aggregate or groupBy."
+rule:
+  kind: call_expression
+  all:
+    - has:
+        field: function
+        kind: member_expression
+        all:
+          - has:
+              field: property
+              regex: ^findMany$
+          - has:
+              field: object
+              kind: member_expression
+              all:
+                - has:
+                    field: property
+                    regex: ^[a-z]
+                - has:
+                    field: object
+                    any:
+                      - kind: identifier
+                        regex: ^(prisma|db|tx|\w*[Pp]risma\w*)$
+                      - kind: member_expression
+                        has:
+                          field: property
+                          regex: ^(prisma|db|tx|\w*[Pp]risma\w*)$
+    - any:
+        - has:
+            field: arguments
+            regex: ^\(\s*\)$
+        - has:
+            field: arguments
+            has:
+              kind: object
+              not:
+                has:
+                  any:
+                    - kind: spread_element
+                    - kind: shorthand_property_identifier
+                      regex: ^take$
+                    - kind: pair
+                      has:
+                        field: key
+                        regex: ^take$

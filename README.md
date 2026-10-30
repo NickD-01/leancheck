@@ -2,7 +2,7 @@
 
 Finds efficiency problems in JavaScript and TypeScript codebases: N+1 queries, awaits that should run in parallel, unneeded client components, duplicated code, overlapping libraries, dead code. A deterministic scanner produces the findings; the Claude Code plugin then reads the code to confirm or reject each one and, only when you ask, fixes them behind a test gate.
 
-> **Status: 0.1.3 pre-release.** The scanner has a test suite, fixture repos and [one real-application run](docs/acceptance/2026-10-first-real-run.md). Expect false positives and gaps. Report mode has run once in real Claude Code; fix mode has only run in simulations, and the evals (`plugin/evals/`) have not been run.
+> **Status: 0.1.4 pre-release.** The scanner has a test suite, fixture repos and [one real-application run](docs/acceptance/2026-10-first-real-run.md). Expect false positives and gaps. Report mode has run once in real Claude Code; fix mode has only run in simulations, and the evals (`plugin/evals/`) have not been run.
 
 ## Why
 
@@ -57,7 +57,7 @@ Then in your project:
 /leancheck fix all-high       # fix every confirmed high-severity finding
 ```
 
-Report mode writes only inside `.leancheck/` (`findings.json`, `triage.json`, `report.md`) and never edits source. It runs the scanner via `npx leancheck@0.1.3`, so Node and network access are needed on first use.
+Report mode writes only inside `.leancheck/` (`findings.json`, `triage.json`, `report.md`) and never edits source. It runs the scanner via `npx leancheck@0.1.4`, so Node and network access are needed on first use.
 
 ### Fix mode
 
@@ -65,7 +65,7 @@ Fix mode touches only the findings you name. For each one it requires a clean gi
 
 - A finding that fails typecheck or tests is rolled back. If a fix fails on tests that mock the old API, the attempted change is restored and saved as a patch in `.leancheck/failed/` so you can review it.
 - Fixes that change behavior (adding a limit, changing ordering, swapping a library) need your explicit confirmation.
-- Dependency changes (removing unused or duplicate packages) are skipped in 0.1.3.
+- Dependency changes (removing unused or duplicate packages) are skipped in 0.1.4.
 
 ## Rules
 
@@ -88,6 +88,7 @@ Each rule has a page under [`docs/rules/`](docs/rules) with a bad and good examp
 | [drizzle/unbounded-select](docs/rules/drizzle/unbounded-select.md) | medium | query with no `limit` |
 | [prisma/query-in-loop](docs/rules/prisma/query-in-loop.md) | high | N+1 queries |
 | [prisma/create-in-loop](docs/rules/prisma/create-in-loop.md) | high | one `create` per item |
+| [prisma/unbounded-select](docs/rules/prisma/unbounded-select.md) | medium | `findMany` without `take` |
 | [nextjs/fetch-in-effect](docs/rules/nextjs/fetch-in-effect.md) | medium | data fetched in `useEffect` |
 | [nextjs/unneeded-use-client](docs/rules/nextjs/unneeded-use-client.md) | medium | `"use client"` on a file that needs nothing from the browser |
 | [react/derived-state-in-effect](docs/rules/react/derived-state-in-effect.md) | medium | state mirrored from props in an effect |

@@ -31,4 +31,5 @@ snapshots the scanner output for this repo.
 | nextjs/unneeded-use-client | src/components/quantity-picker.tsx:1 | trap | `"use client"` needed for `useState` and `onClick` (not flagged) |
 | prisma/create-in-loop | src/lib/audit.ts:6 | real | one `create` per audit event inside `events.map` |
 | prisma/query-in-loop | src/lib/audit.ts:10 | real | `findUnique` per id inside `ids.map` |
+| prisma/unbounded-select | src/lib/audit.ts:14 | real | loads every row only to count them |
 | react/derived-state-in-effect | src/components/order-total.tsx:11 | real | total mirrored into state from `lines` |

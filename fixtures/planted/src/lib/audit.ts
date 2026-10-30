@@ -9,3 +9,8 @@ export async function recordAuditEvents(events: AuditEvent[]): Promise<void> {
 export async function loadAuditActors(ids: string[]) {
   return Promise.all(ids.map((id) => prisma.user.findUnique({ where: { id } })));
 }
+
+export async function countAuditEvents(userId: string) {
+  const events = await prisma.auditLog.findMany({ where: { userId } });
+  return events.length;
+}

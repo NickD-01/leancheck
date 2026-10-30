@@ -70,9 +70,9 @@ Reject when the import is only on a cold path (build scripts, CLI tools, seed sc
 
 Fix: per-function imports (`lodash/sum`), a native equivalent, or a smaller library. Effort `S` for one or two calls, `L` when the library is used across many files. `behaviorChange: true` when the replacement differs in edge cases (date formatting tokens and locales when leaving `moment`; lodash helpers that skip `undefined`/`NaN` where a native reduce would not). Check those edge cases against how the result is used.
 
-### drizzle/unbounded-select
+### drizzle/unbounded-select, prisma/unbounded-select
 
-`findMany` / `select().from()` without a limit.
+`findMany` / `select().from()` without a limit (`take` in Prisma). Also confirm when the rows are loaded only to be counted, summed or filtered in JavaScript: the fix is `count`, `aggregate`, `groupBy` or a narrower `where`, which keeps results identical (`behaviorChange: false`).
 
 Confirm when the table grows with usage (orders, events, messages, products, users, logs) and the query is not filtered down to a bounded set.
 
@@ -83,7 +83,7 @@ Reject when:
 
 Mark `uncertain` when growth depends on production data you cannot see; say what row count would make it a problem.
 
-Adding a limit always changes results: `behaviorChange: true`. The fix should name a limit and how the caller pages (cursor or offset). Effort `M` if callers must handle pagination.
+Adding a limit changes results: `behaviorChange: true`. The fix should name a limit and how the caller pages (cursor or offset). Effort `M` if callers must handle pagination.
 
 ### drizzle/select-all-columns
 

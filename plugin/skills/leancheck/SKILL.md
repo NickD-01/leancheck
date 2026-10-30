@@ -35,7 +35,7 @@ Let `<target>` be the path argument (default `.`). All output goes to `.leanchec
 Run exactly (the env var lets a local build stand in for the published package):
 
 ```bash
-${LEANCHECK_CMD:-npx --yes leancheck@0.1.3} scan '<target>' --json --out .leancheck/findings.json >/dev/null
+${LEANCHECK_CMD:-npx --yes leancheck@0.1.4} scan '<target>' --json --out .leancheck/findings.json >/dev/null
 ```
 
 Allow a long Bash timeout for this command (10 minutes, 600000 ms): large repos can take minutes. Read the `--out` file, not stdout.

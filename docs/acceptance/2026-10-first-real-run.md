@@ -30,3 +30,9 @@ Against a separate Claude code review of the same repository (12 findings):
 | Found only by this side | 5 N+1 loops in push notifications, 1 write loop | 10 areas, mostly unbounded reads and full-history recomputation |
 
 Of 11 high-severity findings, 9 looked real on inspection, after one deliberate fallback was rejected and one unclear case set aside. Prisma has no unbounded-query rule yet, which is the largest gap. leancheck complements a review; it does not replace one.
+
+## Third run: after adding `prisma/unbounded-select`
+
+The same app, compared with the same review. Of the 15 locations the review named, leancheck now reaches 14, within ten lines; 13 come from the new rule. The one miss is repeated counting in a sync function that runs on every action.
+
+That recall has a price. The rule reports 76 places, and in a sample of 14 about 6 mattered; the rest were small tables. leancheck finds where to look, but triage still has to decide what matters. The review's ranking was better, and it explained causes such as filtering in JavaScript after loading everything.

@@ -1,6 +1,6 @@
 {
   "name": "leancheck",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Finds efficiency problems in AI-assisted JS/TS codebases (N+1 queries, sequential awaits, unneeded client components, duplicated helpers, overlapping libraries, dead code) deterministically, uses Claude to verify and rank them by real-world impact, and fixes them behind a test gate only on explicit approval.",
   "author": { "name": "NickD-01" },
   "license": "MIT",

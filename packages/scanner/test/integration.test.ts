@@ -13,10 +13,10 @@ const CLEAN = path.join(fixturesDir, "clean");
 const TIMEOUT_MS = 60_000;
 
 describe("allRuleIds", () => {
-  test("lists the 15 ast-grep rules plus the 3 runner rules", async () => {
+  test("lists the 16 ast-grep rules plus the 3 runner rules", async () => {
     const ids = await allRuleIds();
-    expect(ids).toHaveLength(18);
-    expect(new Set(ids).size).toBe(18);
+    expect(ids).toHaveLength(19);
+    expect(new Set(ids).size).toBe(19);
     expect(ids).toEqual(
       expect.arrayContaining(["core/duplicate-libraries", "core/dead-code", "core/duplicate-code"]),
     );

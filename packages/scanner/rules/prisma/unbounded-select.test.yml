@@ -1,0 +1,17 @@
+id: prisma/unbounded-select
+invalid:
+  - "async function f() { return prisma.user.findMany(); }"
+  - "async function f() { return prisma.book.findMany({ where: { userId } }); }"
+  - "async function f() { return db.book.findMany({ where: { userId }, orderBy: { title: 'asc' } }); }"
+  - "async function f() { return this.prisma.event.findMany({ where: w }); }"
+  - "async function f() { const rows = await tx.dailyActivity.findMany({ where: { userId } }); return rows; }"
+valid:
+  - "async function f() { return prisma.user.findMany({ take: 20 }); }"
+  - "async function f(take: number) { return db.book.findMany({ where: w, take }); }"
+  - "async function f(args: A) { return prisma.user.findMany(args); }"
+  - "async function f(o: O) { return prisma.user.findMany({ ...o, where: w }); }"
+  - "async function f() { return prisma.user.findFirst({ where: w }); }"
+  - "async function f() { return db.query.users.findMany({ where: w }); }"
+  - "async function f() { return client.user.findMany({ where: w }); }"
+  - "async function f() { return db.User.findMany({ where: w }); }"
+  - "async function f() { return items.findMany(); }"

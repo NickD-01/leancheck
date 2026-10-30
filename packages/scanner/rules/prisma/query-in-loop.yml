@@ -8,6 +8,7 @@ fixHint: "Fetch all rows in one query (inArray / IN) and join in memory, or use 
 filter: prismaNotBatched
 supersedes:
   - core/await-in-loop
+  - prisma/unbounded-select
 rule:
   kind: call_expression
   matches: in-loop
