@@ -1,0 +1,34 @@
+id: nextjs/fetch-in-effect
+pack: nextjs
+category: perf
+severity: medium
+confidence: medium
+message: Data fetched inside useEffect starts only after hydration, causing a request waterfall and a loading flash.
+fixHint: Fetch in a server component or route loader and pass the data as props; on the client use a data library (SWR, TanStack Query) instead of a raw effect.
+languages: [tsx, jsx]
+rule:
+  kind: call_expression
+  has:
+    field: function
+    kind: identifier
+    regex: ^useEffect$
+  all:
+    - has:
+        field: arguments
+        has:
+          any:
+            - kind: arrow_function
+            - kind: function_expression
+          has:
+            stopBy: end
+            kind: call_expression
+            has:
+              field: function
+              any:
+                - kind: identifier
+                  regex: ^fetch$
+                - kind: member_expression
+                  has:
+                    field: object
+                    kind: identifier
+                    regex: ^axios$

@@ -1,0 +1,13 @@
+id: drizzle/select-all-columns
+pack: drizzle
+category: perf
+severity: low
+confidence: medium
+message: "select() with no column list reads every column of the table."
+fixHint: "Select only the columns you use: db.select({ id: t.id, … })."
+
+rule:
+  pattern: $DB.select().from($T)
+constraints:
+  DB:
+    kind: identifier

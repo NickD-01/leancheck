@@ -1,0 +1,85 @@
+id: react/derived-state-in-effect
+lang: tsx
+invalid:
+  - |
+    function C(props: P) {
+      const [double, setDouble] = useState(0);
+      useEffect(() => { setDouble(props.a * 2); }, [props.a]);
+      return <p>{double}</p>;
+    }
+  - |
+    function C({ first, last }: P) {
+      useEffect(() => { setFull(first + " " + last); setInitial(first[0]); }, [first, last]);
+      return null;
+    }
+  - |
+    function C({ a }: P) {
+      useEffect(() => setTotal(a + 1), [a]);
+      return null;
+    }
+  - |
+    function C({ a }: P) {
+      React.useEffect(function () { setTotal(a + 1); }, [a]);
+      return null;
+    }
+valid:
+  - |
+    function C({ a }: P) {
+      const double = a * 2;
+      return <p>{double}</p>;
+    }
+  - |
+    function C() {
+      useEffect(() => { window.addEventListener("resize", onResize); return () => window.removeEventListener("resize", onResize); }, []);
+      return null;
+    }
+  - |
+    function C({ a }: P) {
+      useEffect(() => { setTotal(a); return () => setTotal(0); }, [a]);
+      return null;
+    }
+  - |
+    function C() {
+      useEffect(() => { setReady(true); setTimeout(() => setReady(false), 100); }, []);
+      return null;
+    }
+  - |
+    function C({ id }: P) {
+      useEffect(() => { fetch("/x/" + id).then((r) => r.json()).then(setData); }, [id]);
+      return null;
+    }
+  - |
+    function C({ id }: P) {
+      useEffect(() => { const run = async () => { setData(await load(id)); }; run(); }, [id]);
+      return null;
+    }
+  - |
+    function C({ id }: P) {
+      useEffect(() => { track(id); setSeen(true); }, [id]);
+      return null;
+    }
+  - |
+    function C() {
+      useEffect(() => {}, []);
+      return null;
+    }
+  - |
+    function C({ a }: P) {
+      useEffect(() => { setTotal(a); });
+      return null;
+    }
+  - |
+    function C() {
+      useEffect(() => { setMounted(true); }, []);
+      return null;
+    }
+  - |
+    function C() {
+      useEffect(() => { setOpen(false); }, [pathname]);
+      return null;
+    }
+  - |
+    function C() {
+      useEffect(() => { setPage(1); }, [query]);
+      return null;
+    }

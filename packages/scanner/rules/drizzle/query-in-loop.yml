@@ -1,0 +1,48 @@
+id: drizzle/query-in-loop
+pack: drizzle
+category: perf
+severity: high
+confidence: high
+message: Database query inside a loop or iteration callback runs once per item (N+1).
+fixHint: Fetch all rows in one query (inArray / IN) and join in memory, or use a relational query.
+
+filter: drizzleInsertNotBatched
+supersedes:
+  - core/await-in-loop
+rule:
+  kind: call_expression
+  matches: in-loop
+  any:
+    - all:
+        - has:
+            field: function
+            kind: member_expression
+            all:
+              - has:
+                  field: object
+                  kind: identifier
+              - has:
+                  field: property
+                  regex: ^(select|insert|update|delete)$
+        - inside:
+            kind: member_expression
+            field: object
+            has:
+              field: property
+              regex: ^(from|values|set|where|returning)$
+    - has:
+        field: function
+        kind: member_expression
+        all:
+          - has:
+              field: property
+              regex: ^(findFirst|findMany)$
+          - has:
+              field: object
+              kind: member_expression
+              has:
+                field: object
+                kind: member_expression
+                has:
+                  field: property
+                  regex: ^query$

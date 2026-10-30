@@ -1,0 +1,14 @@
+id: core/sync-io-in-handler
+invalid:
+  - "export async function GET() { const t = fs.readFileSync('a.txt', 'utf8'); return t; }"
+  - "const handler = async (req: Req) => { if (existsSync(req.path)) return readFileSync(req.path); };"
+  - "class C { async run() { fs.writeFileSync('o.json', data); } }"
+  - "app.get('/x', async function (req, res) { res.send(fs.readdirSync('.')); });"
+  - "async function f() { return statSync('a').size + appendFileSync('l', 'x'); }"
+valid:
+  - "const config = readFileSync('config.json', 'utf8');"
+  - "import fs from 'node:fs'; const exists = fs.existsSync('a');"
+  - "function load() { return fs.readFileSync('a.txt', 'utf8'); }"
+  - "async function f() { const t = await fs.promises.readFile('a.txt', 'utf8'); return t; }"
+  - "async function f() { const read = () => fs.readFileSync('a'); return read; }"
+  - "async function f() { return readFile('a'); }"

@@ -1,0 +1,21 @@
+id: core/lookup-in-loop
+invalid:
+  - "function f(a: X[], b: X[]) { for (const x of a) { if (b.includes(x)) out.push(x); } }"
+  - "function f(orders: O[], users: U[]) { return orders.map((o) => users.find((u) => u.id === o.userId)); }"
+  - "function f(ids: string[], rows: R[]) { ids.forEach((id) => { const r = rows.filter((x) => x.id === id); use(r); }); }"
+  - "function f(n: number, list: number[]) { for (let i = 0; i < n; i++) { if (list.indexOf(i) >= 0) hit(i); } }"
+  - "function f(xs: number[], ys: number[]) { while (xs.length) { if (ys.some((y) => y === xs.pop())) hit(); } }"
+valid:
+  - "function f(list: number[], x: number) { return list.includes(x); }"
+  - "function f(users: U[], id: string) { const u = users.find((u) => u.id === id); return u; }"
+  - "function f(a: X[], b: X[]) { const set = new Set(b); for (const x of a) { if (set.has(x)) out.push(x); } }"
+  - "function f(a: X[]) { for (const x of a) { if (getList().includes(x)) out.push(x); } }"
+  - "function f(a: X[]) { const hits = a.filter((x) => x.ok); return hits; }"
+  - "function f(a: X[], b: X[]) { for (const x of b.filter(Boolean)) { use(x); } }"
+  - "function f(files: string[]) { for (const f of files) { if (f.includes('.test.')) continue; } }"
+  - "function f(lines: string[]) { return lines.map((l) => l.indexOf(':')); }"
+  - "function f(groups: G[][]) { for (const g of groups) { use(g.filter(Boolean)); } }"
+  - "function f(rows: R[][]) { return rows.map((r) => r.some((c) => c.ok)); }"
+  - "function f(pairs: P[]) { return pairs.map(({ tags }) => tags.includes('a')); }"
+  - "function f(m: Map<string, string[]>) { for (const [k, vals] of m) { if (vals.includes(k)) hit(); } }"
+  - "function f(n: number) { for (let list = mk(); n--; ) { list.includes(n); } }"

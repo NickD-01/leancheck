@@ -1,0 +1,44 @@
+id: nextjs/fetch-in-effect
+lang: tsx
+invalid:
+  - |
+    function List() {
+      useEffect(() => { fetch("/api/items").then((r) => r.json()).then(setItems); }, []);
+      return null;
+    }
+  - |
+    function List() {
+      useEffect(() => {
+        async function load() { const res = await axios.get("/api/items"); setItems(res.data); }
+        load();
+      }, []);
+      return null;
+    }
+  - |
+    function List() {
+      useEffect(function () { fetch(url); }, [url]);
+      return null;
+    }
+valid:
+  - |
+    function List({ items }: { items: Item[] }) { return <ul>{items.map((i) => <li key={i.id}>{i.name}</li>)}</ul>; }
+  - |
+    function List() {
+      const onSave = () => fetch("/api/save", { method: "POST" });
+      return <button onClick={onSave}>Save</button>;
+    }
+  - |
+    function List() {
+      useEffect(() => { document.title = "List"; }, []);
+      return null;
+    }
+  - |
+    function List() {
+      useEffect(() => { const t = setTimeout(tick, 100); return () => clearTimeout(t); }, []);
+      return null;
+    }
+  - |
+    function List() {
+      useLayoutEffect(() => { fetch("/x"); }, []);
+      return null;
+    }

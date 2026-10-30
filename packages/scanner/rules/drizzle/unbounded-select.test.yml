@@ -1,0 +1,23 @@
+id: drizzle/unbounded-select
+invalid:
+  - "async function f() { return db.query.users.findMany(); }"
+  - "async function f() { return db.query.users.findMany({ where: eq(users.active, true) }); }"
+  - "async function f() { return db.select().from(users); }"
+  - "async function f() { return db.select({ id: users.id }).from(users).where(eq(users.active, true)); }"
+  - "async function f() { return db.select().from(users).orderBy(users.id); }"
+  - "async function f() { const rows = await db.select().from(users); return rows; }"
+valid:
+  - "async function f() { return db.query.users.findMany({ limit: 20 }); }"
+  - "async function f(limit: number) { return db.query.users.findMany({ where: w, limit }); }"
+  - "async function f(opts: O) { return db.query.users.findMany(opts); }"
+  - "async function f(o: O) { return db.query.users.findMany({ ...o, where: w }); }"
+  - "async function f() { return db.select().from(users).limit(20); }"
+  - "async function f() { return db.select().from(users).where(w).orderBy(users.id).limit(10).offset(5); }"
+  - "async function f() { return db.select({ n: count() }).from(users); }"
+  - "async function f() { return prisma.user.findMany({ where: w }); }"
+  - "async function f() { return items.findMany(); }"
+  - "async function f() { const [row] = await db.select().from(users).where(eq(users.id, 1)); return row; }"
+  - "async function f() { const [row] = await db.select({ id: users.id }).from(users); return row; }"
+  - "async function f() { return db.delete(a).where(inArray(a.id, db.select({ id: b.id }).from(b))); }"
+  - "async function f() { return db.select().from(users).$dynamic().where(w); }"
+  - "async function f() { const q = db.select().from(users).$dynamic(); return q; }"

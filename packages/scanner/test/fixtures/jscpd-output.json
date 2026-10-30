@@ -1,0 +1,109 @@
+{
+  "duplicates": [
+    {
+      "firstFile": {
+        "end": 15,
+        "endLoc": {
+          "column": 6,
+          "line": 15,
+          "position": 387
+        },
+        "name": "src/a.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 21,
+          "line": 1,
+          "position": 21
+        }
+      },
+      "format": "typescript",
+      "fragment": "export function first(): number {\n  let total = 0;\n  const a0 = compute(0, \"value-0\");\n  total += a0 * 3;\n  const a1 = compute(1, \"value-1\");\n  total += a1 * 4;\n  const a2 = compute(2, \"value-2\");\n  total += a2 * 5;\n  const a3 = compute(3, \"value-3\");\n  total += a3 * 6;\n  const a4 = compute(4, \"value-4\");\n  total += a4 * 7;\n  const a5 = compute(5, \"value-5\");\n  total += a5 * 8;\n  log(\"separator first\");",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 15,
+      "secondFile": {
+        "end": 15,
+        "endLoc": {
+          "column": 6,
+          "line": 15,
+          "position": 388
+        },
+        "name": "src/b.ts",
+        "start": 1,
+        "startLoc": {
+          "column": 22,
+          "line": 1,
+          "position": 22
+        }
+      },
+      "tokens": 108
+    },
+    {
+      "firstFile": {
+        "end": 48,
+        "endLoc": {
+          "column": 1,
+          "line": 48,
+          "position": 1291
+        },
+        "name": "src/a.ts",
+        "start": 16,
+        "startLoc": {
+          "column": 12,
+          "line": 16,
+          "position": 419
+        }
+      },
+      "format": "typescript",
+      "fragment": "  total += 1;\n  const b0 = compute(0, \"value-0\");\n  total += b0 * 3;\n  const b1 = compute(1, \"value-1\");\n  total += b1 * 4;\n  const b2 = compute(2, \"value-2\");\n  total += b2 * 5;\n  const b3 = compute(3, \"value-3\");\n  total += b3 * 6;\n  const b4 = compute(4, \"value-4\");\n  total += b4 * 7;\n  const b5 = compute(5, \"value-5\");\n  total += b5 * 8;\n  const b6 = compute(6, \"value-6\");\n  total += b6 * 9;\n  const b7 = compute(7, \"value-7\");\n  total += b7 * 10;\n  const b8 = compute(8, \"value-8\");\n  total += b8 * 11;\n  const b9 = compute(9, \"value-9\");\n  total += b9 * 12;\n  const b10 = compute(10, \"value-10\");\n  total += b10 * 13;\n  const b11 = compute(11, \"value-11\");\n  total += b11 * 14;\n  const b12 = compute(12, \"value-12\");\n  total += b12 * 15;\n  const b13 = compute(13, \"value-13\");\n  total += b13 * 16;\n  const b14 = compute(14, \"value-14\");\n  total += b14 * 17;\n  return total;\n}",
+      "isNew": false,
+      "kind": "exact",
+      "lines": 33,
+      "secondFile": {
+        "end": 48,
+        "endLoc": {
+          "column": 1,
+          "line": 48,
+          "position": 1293
+        },
+        "name": "src/b.ts",
+        "start": 16,
+        "startLoc": {
+          "column": 12,
+          "line": 16,
+          "position": 421
+        }
+      },
+      "tokens": 245
+    }
+  ],
+  "statistics": {
+    "detectionDate": "2026-10-29T20:32:14.710Z",
+    "formats": {
+      "typescript": {
+        "clones": 2,
+        "duplicatedLines": 48,
+        "duplicatedTokens": 353,
+        "lines": 96,
+        "newClones": 0,
+        "newDuplicatedLines": 0,
+        "percentage": 50,
+        "percentageTokens": 48.75690607734807,
+        "sources": 2,
+        "tokens": 724
+      }
+    },
+    "total": {
+      "clones": 2,
+      "duplicatedLines": 48,
+      "duplicatedTokens": 353,
+      "lines": 96,
+      "newClones": 0,
+      "newDuplicatedLines": 0,
+      "percentage": 50,
+      "percentageTokens": 48.75690607734807,
+      "sources": 2,
+      "tokens": 724
+    }
+  }
+}

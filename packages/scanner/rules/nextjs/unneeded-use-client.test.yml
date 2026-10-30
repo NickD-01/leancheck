@@ -1,0 +1,78 @@
+id: nextjs/unneeded-use-client
+lang: tsx
+invalid:
+  - |
+    "use client";
+    export function Card({ title }: { title: string }) { return <div>{title}</div>; }
+  - |
+    'use client'
+    import { format } from "./format";
+    export default function Price({ cents }: { cents: number }) { return <span>{format(cents)}</span>; }
+  - |
+    // shared card
+    "use client";
+    export const Badge = () => <b>new</b>;
+  - |
+    "use client";
+    import { Card } from "@/components/card";
+    import { fmt } from "../lib/fmt";
+    export function Price({ cents }: { cents: number }) { return <Card><span>{fmt(cents)}</span></Card>; }
+  - |
+    "use client";
+    import React from "react";
+    import Link from "next/link";
+    export function Nav() { return <Link href="/"><p>home</p></Link>; }
+valid:
+  - |
+    "use client";
+    export function Counter() { const [n, setN] = useState(0); return <p>{n}</p>; }
+  - |
+    "use client";
+    export function Btn() { return <button onClick={() => go()}>Go</button>; }
+  - |
+    "use client";
+    export function Nav() { const router = useRouter(); return <a href={router.pathname}>here</a>; }
+  - |
+    "use client";
+    export function W() { return <p>{window.innerWidth}</p>; }
+  - |
+    "use client";
+    export class Box extends React.Component { render() { return <div />; } }
+  - |
+    "use client";
+    export const ThemeContext = createContext("light");
+  - |
+    "use client";
+    export function Form() { const x = React.useId(); return <input id={x} />; }
+  - |
+    export function Card() { return <div>server</div>; }
+  - |
+    import { a } from "./a";
+    "use client";
+    export const B = () => <div />;
+  - |
+    "use strict";
+    export const B = () => <div />;
+  - |
+    "use client";
+    import * as React from "react";
+    import { ThemeProvider as NextThemesProvider } from "next-themes";
+    export function ThemeProvider({ children, ...props }: Props) {
+      return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+    }
+  - |
+    "use client";
+    import * as DialogPrimitive from "@radix-ui/react-dialog";
+    export const Dialog = DialogPrimitive.Root;
+    export const DialogTrigger = DialogPrimitive.Trigger;
+  - |
+    "use client";
+    import * as DialogPrimitive from "@radix-ui/react-dialog";
+    export function Overlay() { return <DialogPrimitive.Overlay className="x" />; }
+  - |
+    "use client";
+    export { Toaster } from "sonner";
+  - |
+    "use client";
+    import { motion } from "framer-motion";
+    export const MotionDiv = motion.div;

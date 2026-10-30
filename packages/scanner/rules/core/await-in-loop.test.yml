@@ -1,0 +1,15 @@
+id: core/await-in-loop
+invalid:
+  - "async function f(ids: string[]) { for (const id of ids) { await load(id); } }"
+  - "async function f(n: number) { for (let i = 0; i < n; i++) { const r = await fetch(`/a/${i}`); out.push(r); } }"
+  - "async function f(q: Q[]) { while (q.length) { await run(q.pop()); } }"
+  - "async function f(o: object) { for (const k in o) { await save(k); } }"
+  - "async function f() { let cursor = start; while (cursor) { cursor = await next(cursor); } }"
+valid:
+  - "async function f(ids: string[]) { await Promise.all(ids.map((id) => load(id))); }"
+  - "async function f() { const r = await load(); return r; }"
+  - "function f(ids: string[]) { for (const id of ids) { ids.push(id); } }"
+  - "function f(ids: string[]) { for (const id of ids) { const run = async () => { await load(id); }; jobs.push(run); } }"
+  - "function f(ids: string[]) { for (const id of ids) { jobs.push(async function g() { await load(id); }); } }"
+  - "async function f(s: AsyncIterable<number>) { for await (const x of s) { use(x); } }"
+  - "async function f() { for (const id of await listIds()) { use(id); } }"

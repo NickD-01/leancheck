@@ -1,0 +1,9 @@
+id: core/json-deep-clone
+pack: core
+category: perf
+severity: medium
+confidence: high
+message: Deep clone via JSON round-trip is slow and drops Dates, Maps and undefined.
+fixHint: Use structuredClone(value).
+rule:
+  pattern: JSON.parse(JSON.stringify($X))

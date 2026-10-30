@@ -1,0 +1,93 @@
+id: drizzle/unbounded-select
+pack: drizzle
+category: perf
+severity: medium
+confidence: medium
+message: "Query has no limit, so it loads every matching row."
+fixHint: "Add a limit (and pagination) — this changes results, confirm intent."
+
+filter: selectChainUnbounded
+rule:
+  kind: call_expression
+  any:
+    - all:
+        - has:
+            field: function
+            kind: member_expression
+            all:
+              - has:
+                  field: property
+                  regex: ^findMany$
+              - has:
+                  field: object
+                  kind: member_expression
+                  has:
+                    field: object
+                    kind: member_expression
+                    has:
+                      field: property
+                      regex: ^query$
+        - any:
+            - has:
+                field: arguments
+                regex: ^\(\s*\)$
+            - has:
+                field: arguments
+                has:
+                  kind: object
+                  not:
+                    has:
+                      any:
+                        - kind: spread_element
+                        - kind: shorthand_property_identifier
+                          regex: ^limit$
+                        - kind: pair
+                          has:
+                            field: key
+                            regex: ^limit$
+    - all:
+        - has:
+            field: function
+            kind: member_expression
+            all:
+              - has:
+                  field: property
+                  regex: ^from$
+              - has:
+                  field: object
+                  kind: call_expression
+                  all:
+                    - has:
+                        field: function
+                        kind: member_expression
+                        all:
+                          - has:
+                              field: object
+                              kind: identifier
+                          - has:
+                              field: property
+                              regex: ^select$
+                    - not:
+                        has:
+                          field: arguments
+                          has:
+                            kind: object
+                            has:
+                              kind: pair
+                              has:
+                                field: value
+                                kind: call_expression
+        - not:
+            inside:
+              kind: call_expression
+              has:
+                field: function
+                kind: member_expression
+                has:
+                  field: property
+                  regex: ^limit$
+              stopBy:
+                not:
+                  any:
+                    - kind: member_expression
+                    - kind: call_expression

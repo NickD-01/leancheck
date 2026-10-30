@@ -1,0 +1,20 @@
+id: drizzle/insert-in-loop
+pack: drizzle
+category: perf
+severity: high
+confidence: high
+message: "Row-by-row insert inside a loop or iteration callback issues one INSERT per item."
+fixHint: "Collect rows and insert once with .values([...rows])."
+filter: drizzleInsertNotBatched
+supersedes:
+  - drizzle/query-in-loop
+  - core/await-in-loop
+rule:
+  pattern: $DB.insert($T).values($V)
+  matches: in-loop
+constraints:
+  DB:
+    kind: identifier
+  V:
+    not:
+      kind: array

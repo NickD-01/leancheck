@@ -1,0 +1,21 @@
+{
+  "name": "leancheck-monorepo",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p packages/scanner --noEmit",
+    "build": "npm run build -w leancheck"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5"
+  }
+}

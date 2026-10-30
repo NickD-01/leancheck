@@ -1,0 +1,33 @@
+# Shared ast-grep utils merged into every rule's utils (rule-local keys win).
+in-loop:
+  any:
+    - inside:
+        field: body
+        stopBy: &fn
+          any:
+            - kind: function_declaration
+            - kind: function_expression
+            - kind: arrow_function
+            - kind: method_definition
+            - kind: generator_function_declaration
+            - kind: generator_function
+        any:
+          - kind: for_statement
+          - kind: for_in_statement
+          - kind: while_statement
+          - kind: do_statement
+    - inside:
+        stopBy: *fn
+        any:
+          - kind: arrow_function
+          - kind: function_expression
+        inside:
+          kind: arguments
+          inside:
+            kind: call_expression
+            has:
+              field: function
+              kind: member_expression
+              has:
+                field: property
+                regex: ^(map|forEach|reduce|filter|flatMap)$

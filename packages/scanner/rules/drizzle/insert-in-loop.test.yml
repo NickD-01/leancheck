@@ -1,0 +1,16 @@
+id: drizzle/insert-in-loop
+invalid:
+  - "async function f(rows: R[]) { for (const r of rows) { await db.insert(t).values(r); } }"
+  - "async function f(rows: R[]) { await Promise.all(rows.map((r) => db.insert(t).values({ a: r.a }))); }"
+  - "async function f(rows: R[]) { for (const r of rows) { await tx.insert(t).values(r).returning(); } }"
+valid:
+  - "async function f(rows: R[]) { await db.insert(t).values(rows); }"
+  - "async function f(rows: R[]) { for (const r of rows) { await db.insert(t).values([r]); } }"
+  - "async function f(rows: R[]) { await db.insert(t).values([{ a: 1 }, { a: 2 }]); }"
+  - "async function f(rows: R[]) { for (const r of rows) { jobs.push(() => db.insert(t).values(r)); } }"
+  - "async function f(rows: R[]) { for (const r of rows) { await db.update(t).set(r); } }"
+  - "async function f(chunks: R[][]) { for (const chunk of chunks) { await db.insert(t).values(chunk); } }"
+  - "async function f(rows: R[]) { for (let i = 0; i < rows.length; i += BATCH) { await db.insert(t).values(rows.slice(i, i + BATCH)); } }"
+  - "async function f(batches: R[][]) { for (const b of batches) { await db.insert(t).values(b); } }"
+  - "async function f(rows: R[]) { for (const r of rows) { await db.insert(t).values(batchRow); } }"
+  - "async function f(chunks: R[][]) { await Promise.all(chunks.map((c) => db.insert(t).values(c))); }"

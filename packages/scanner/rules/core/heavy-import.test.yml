@@ -1,0 +1,12 @@
+id: core/heavy-import
+invalid:
+  - "import _ from 'lodash';"
+  - "import moment from \"moment\";"
+  - "import * as R from 'ramda';"
+  - "import * as _ from \"underscore\";"
+valid:
+  - "import debounce from 'lodash/debounce';"
+  - "import { format } from 'date-fns';"
+  - "import dayjs from 'dayjs';"
+  - "import fs from 'node:fs';"
+  - "import 'lodash';"

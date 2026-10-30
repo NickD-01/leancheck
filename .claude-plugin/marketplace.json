@@ -1,0 +1,13 @@
+{
+  "name": "leancheck",
+  "owner": { "name": "NickD-01" },
+  "plugins": [
+    {
+      "name": "leancheck",
+      "source": "./plugin",
+      "description": "Finds efficiency problems in JS/TS codebases with a deterministic scanner, triages them with Claude, and fixes approved findings behind a test gate.",
+      "version": "0.1.2",
+      "license": "MIT"
+    }
+  ]
+}

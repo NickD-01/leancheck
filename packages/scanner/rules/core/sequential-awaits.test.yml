@@ -1,0 +1,12 @@
+id: core/sequential-awaits
+invalid:
+  - "async function f() { const a = await getA(); const b = await getB(); return [a, b]; }"
+  - "async function f() { const user = await getUser(); const posts = await getPosts(); const tags = await getTags(); return 1; }"
+  - "async function f() { const { id } = await getA(); const b = await getB(); return id + b; }"
+  - "async function f() { const a = await getA(); const b = await getB(other); return a + b; }"
+valid:
+  - "async function f() { const a = await getA(); const b = await getB(a.id); return b; }"
+  - "async function f() { const { id } = await getA(); const b = await getB(id); return b; }"
+  - "async function f() { const [a, b] = await Promise.all([getA(), getB()]); return a + b; }"
+  - "async function f() { const a = await getA(); log(a); const b = await getB(); return b; }"
+  - "async function f() { const a = await getA(); const b = compute(); return a + b; }"

@@ -1,0 +1,13 @@
+id: prisma/create-in-loop
+invalid:
+  - "async function f(rows: R[]) { for (const r of rows) { await prisma.user.create({ data: r }); } }"
+  - "async function f(rows: R[]) { await Promise.all(rows.map((r) => tx.user.create({ data: r }))); }"
+valid:
+  - "async function f(rows: R[]) { await prisma.user.createMany({ data: rows }); }"
+  - "async function f(r: R) { await prisma.user.create({ data: r }); }"
+  - "function f(rows: R[]) { for (const r of rows) { registry.entries.create(r); } }"
+  - "function f(rows: R[]) { for (const r of rows) { jobs.push(() => prisma.user.create({ data: r })); } }"
+  - "async function f(ids: string[]) { for (const id of ids) { await client.messages.create({ to: id, body }); } }"
+  - "async function f(ids: string[]) { for (const id of ids) { await db.User.create({ name: id }); } }"
+  - "async function f(batches: B[]) { for (const batch of batches) { await prisma.user.create({ data: batch }); } }"
+  - "async function f(rows: R[]) { return prisma.$transaction(rows.map((r) => prisma.user.create({ data: r }))); }"

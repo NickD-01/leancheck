@@ -1,0 +1,23 @@
+id: nextjs/unneeded-use-client
+pack: nextjs
+category: bloat
+severity: medium
+confidence: high
+message: '"use client" turns this whole module (and everything it imports) into client JavaScript, but nothing in the file needs the browser.'
+fixHint: Remove the "use client" directive so it stays a server component; keep it only on the leaf components that use hooks, event handlers or browser APIs.
+languages: [tsx, jsx, ts, js]
+rule:
+  kind: expression_statement
+  inside:
+    kind: program
+  has:
+    kind: string
+    has:
+      kind: string_fragment
+      regex: ^use client$
+  not:
+    follows:
+      stopBy: end
+      not:
+        kind: comment
+filter: noClientOnlyFeatures

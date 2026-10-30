@@ -1,0 +1,46 @@
+id: prisma/create-in-loop
+pack: prisma
+category: perf
+severity: high
+confidence: high
+message: "Prisma create inside a loop or iteration callback issues one INSERT per item."
+fixHint: "Use createMany({ data: rows })."
+filter: prismaNotBatched
+supersedes:
+  - prisma/query-in-loop
+  - core/await-in-loop
+rule:
+  kind: call_expression
+  matches: in-loop
+  all:
+    - has:
+        field: function
+        kind: member_expression
+        all:
+          - has:
+              field: property
+              regex: ^create$
+          - has:
+              field: object
+              kind: member_expression
+              all:
+                - has:
+                    field: property
+                    regex: ^[a-z]
+                - has:
+                    field: object
+                    any:
+                      - kind: identifier
+                        regex: ^(prisma|db|tx|\w*[Pp]risma\w*)$
+                      - kind: member_expression
+                        has:
+                          field: property
+                          regex: ^(prisma|db|tx|\w*[Pp]risma\w*)$
+    - any:
+        - has:
+            field: arguments
+            has:
+              kind: object
+        - has:
+            field: arguments
+            regex: ^\(\s*\)$

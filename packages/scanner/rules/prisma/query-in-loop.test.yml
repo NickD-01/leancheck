@@ -1,0 +1,22 @@
+id: prisma/query-in-loop
+invalid:
+  - "async function f(ids: string[]) { for (const id of ids) { await prisma.user.findUnique({ where: { id } }); } }"
+  - "async function f(ids: string[]) { return Promise.all(ids.map((id) => db.post.findMany({ where: { authorId: id } }))); }"
+  - "async function f(rows: R[]) { for (const r of rows) { await tx.order.update({ where: { id: r.id }, data: { a: 1 } }); } }"
+  - "async function f(rows: R[]) { rows.forEach(async (r) => { await prisma.order.upsert({ where: { id: r.id }, create: r, update: r }); }); }"
+  - "async function f(ids: string[]) { for (const id of ids) { await this.prisma.user.delete({ where: { id } }); } }"
+  - "async function f(ids: string[]) { for (const id of ids) { await appPrisma.user.count({ where: { id } }); } }"
+  - "async function f(n: number) { let i = 0; while (i < n) { await prisma.user.count(); i++; } }"
+valid:
+  - "async function f(ids: string[]) { return prisma.user.findMany({ where: { id: { in: ids } } }); }"
+  - "function f(arr: A) { for (const x of xs) { arr.items.find((i) => i.id === x); } }"
+  - "function f() { for (const k of keys) { client.cache.delete(k); } }"
+  - "function f() { for (const k of keys) { store.sessions.delete(k); } }"
+  - "function f() { for (const k of keys) { db.sessions.delete(k); } }"
+  - "function f() { for (const k of keys) { thing.user.findMany({ where: k }); } }"
+  - "function f() { for (const k of keys) { jobs.push(() => prisma.user.findMany({ where: k })); } }"
+  - "async function f() { return prisma.user.findFirst({ where: { id: 1 } }); }"
+  - "function f(ids: string[]) { for (const id of ids) { db.User.update({ a: 1 }, { where: { id } }); } }"
+  - "function f(ids: string[]) { for (const id of ids) { client.messages.update({ to: id }); } }"
+  - "async function f(chunks: C[]) { for (const chunk of chunks) { await prisma.user.update({ where: { id: chunk.id }, data: { a: 1 } }); } }"
+  - "async function f(ids: string[]) { return prisma.$transaction(ids.map((id) => prisma.user.update({ where: { id }, data: { a: 1 } }))); }"

@@ -1,0 +1,7 @@
+.superpowers/
+node_modules
+dist
+.leancheck
+fixtures/*/node_modules
+packages/scanner/README.md
+packages/scanner/LICENSE

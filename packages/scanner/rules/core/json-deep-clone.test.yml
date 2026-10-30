@@ -1,0 +1,11 @@
+id: core/json-deep-clone
+invalid:
+  - "const copy = JSON.parse(JSON.stringify(state));"
+  - "const copy = JSON.parse(JSON.stringify(a.b.c));"
+  - "function f(x: Foo) { return JSON.parse(JSON.stringify(x)); }"
+  - "const items = list.map((i) => JSON.parse(JSON.stringify(i)));"
+valid:
+  - "const copy = structuredClone(x);"
+  - "const data = JSON.parse(raw);"
+  - "const s = JSON.stringify(x);"
+  - "const d = JSON.parse(await res.text());"

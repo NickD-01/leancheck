@@ -1,0 +1,31 @@
+id: react/derived-state-in-effect
+pack: react
+category: perf
+severity: medium
+confidence: high
+message: State that only mirrors props or other state is synced in useEffect, forcing an extra render on every change.
+fixHint: Compute the value during render (const x = f(props)), memoising with useMemo only if it is expensive.
+languages: [tsx, jsx]
+rule:
+  kind: call_expression
+  has:
+    field: function
+    any:
+      - kind: identifier
+        regex: ^useEffect$
+      - kind: member_expression
+        has:
+          field: property
+          regex: ^useEffect$
+  all:
+    - has:
+        field: arguments
+        has:
+          any:
+            - kind: arrow_function
+            - kind: function_expression
+    - has:
+        field: arguments
+        has:
+          kind: array
+filter: onlyDerivedSetState

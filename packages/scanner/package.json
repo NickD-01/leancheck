@@ -1,0 +1,64 @@
+{
+  "name": "leancheck",
+  "version": "0.1.2",
+  "description": "JS/TS efficiency scanner: performance, bloat and duplication findings",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickD-01/leancheck.git",
+    "directory": "packages/scanner"
+  },
+  "homepage": "https://github.com/NickD-01/leancheck#readme",
+  "keywords": [
+    "performance",
+    "efficiency",
+    "static-analysis",
+    "n+1",
+    "lint",
+    "drizzle",
+    "prisma",
+    "nextjs",
+    "react",
+    "claude-code"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "leancheck": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "rules",
+    "!rules/**/*.test.yml"
+  ],
+  "scripts": {
+    "build": "tsup && tsc -p tsconfig.build.json",
+    "prepack": "node -e \"const fs=require('fs');for(const f of ['README.md','LICENSE'])fs.copyFileSync('../../'+f,f)\"",
+    "postpack": "node -e \"const fs=require('fs');for(const f of ['README.md','LICENSE'])fs.rmSync(f,{force:true})\"",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@ast-grep/napi": "0.51.0",
+    "fast-glob": "3.3.3",
+    "jscpd": "5.4.2",
+    "knip": "6.44.0",
+    "picomatch": "^4.0.7",
+    "yaml": "2.9.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/picomatch": "^4.0.0",
+    "tsup": "8.5.1"
+  }
+}

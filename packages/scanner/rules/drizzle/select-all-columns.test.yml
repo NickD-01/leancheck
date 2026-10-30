@@ -1,0 +1,8 @@
+id: drizzle/select-all-columns
+invalid:
+  - "async function f() { return db.select().from(users).where(eq(users.id, 1)); }"
+  - "async function f() { const rows = await tx.select().from(users); return rows; }"
+valid:
+  - "async function f() { return db.select({ id: users.id }).from(users); }"
+  - "function f() { return jq.select().then(x); }"
+  - "function f() { return list.select().where(x); }"

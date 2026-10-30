@@ -1,0 +1,22 @@
+id: core/sequential-awaits
+pack: core
+category: perf
+severity: medium
+confidence: medium
+message: Two independent awaits run back to back; the second waits for the first needlessly.
+fixHint: Start both and await together, e.g. const [a, b] = await Promise.all([f(), g()]).
+filter: sequentialAwaitsIndependent
+rule:
+  kind: lexical_declaration
+  has:
+    kind: variable_declarator
+    has:
+      field: value
+      kind: await_expression
+  precedes:
+    kind: lexical_declaration
+    has:
+      kind: variable_declarator
+      has:
+        field: value
+        kind: await_expression

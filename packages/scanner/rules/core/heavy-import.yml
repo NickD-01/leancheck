@@ -1,0 +1,22 @@
+id: core/heavy-import
+pack: core
+category: bloat
+severity: low
+confidence: medium
+message: Whole-library import pulls a large dependency into the bundle.
+fixHint: Import only what you use from a per-function path (lodash/debounce), a smaller library (date-fns, dayjs), or a native API.
+rule:
+  kind: import_statement
+  all:
+    - has:
+        field: source
+        kind: string
+        regex: ^.(lodash|moment|underscore|ramda).$
+    - has:
+        kind: import_clause
+        any:
+          - has:
+              kind: identifier
+              stopBy: neighbor
+          - has:
+              kind: namespace_import

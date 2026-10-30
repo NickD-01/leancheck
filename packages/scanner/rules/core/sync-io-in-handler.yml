@@ -1,0 +1,34 @@
+id: core/sync-io-in-handler
+pack: core
+category: perf
+severity: high
+confidence: high
+message: Synchronous filesystem call inside an async function blocks the event loop for every concurrent request.
+fixHint: Use the fs/promises equivalent (readFile, writeFile, access, readdir, stat, appendFile) with await.
+rule:
+  kind: call_expression
+  any:
+    - has:
+        field: function
+        kind: identifier
+        regex: ^(readFileSync|writeFileSync|existsSync|readdirSync|statSync|appendFileSync)$
+    - has:
+        field: function
+        kind: member_expression
+        has:
+          field: property
+          regex: ^(readFileSync|writeFileSync|existsSync|readdirSync|statSync|appendFileSync)$
+  inside:
+    all:
+      - any:
+          - kind: function_declaration
+          - kind: function_expression
+          - kind: arrow_function
+          - kind: method_definition
+      - regex: ^async\b
+    stopBy:
+      any:
+        - kind: function_declaration
+        - kind: function_expression
+        - kind: arrow_function
+        - kind: method_definition
