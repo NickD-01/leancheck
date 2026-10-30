@@ -12,7 +12,7 @@
 - **`<scan>`** means, with the same env-var fallback as report mode:
 
   ```bash
-  ${LEANCHECK_CMD:-npx --yes leancheck@0.1.2} scan '<target>' --json --out '<file>' >/dev/null
+  ${LEANCHECK_CMD:-npx --yes leancheck@0.1.3} scan '<target>' --json --out '<file>' >/dev/null
   ```
 
   Read the `--out` file, not stdout. Any non-zero exit is a scanner failure. Never write to `findingsFile`: the IDs the user chose refer to it.

@@ -18,6 +18,23 @@ function rootWorkspace(absDir: string): Workspace {
 }
 
 describe("normalizeKnip", () => {
+  it("skips unused type exports referenced again in their own file", () => {
+    const json = {
+      issues: [
+        {
+          file: "src/a.ts",
+          types: [
+            { name: "Row", line: 1 },
+            { name: "Orphan", line: 2 },
+          ],
+        },
+      ],
+    };
+    const source = "export type Row = { a: 1 };\nexport type Orphan = 1;\nexport type Doc = { rows: Row[] };\n";
+    const findings = normalizeKnip(json, "/r", rootWorkspace("/r"), () => source);
+    expect(findings.map((f) => f.message)).toEqual(["Unused export Orphan"]);
+  });
+
   it("maps the recorded output to exactly three findings", () => {
     const root = "/repo";
     const findings = normalizeKnip(fixture, root, rootWorkspace(root));

@@ -1,5 +1,6 @@
 ---
 name: leancheck
+argument-hint: "[path] | fix <ids…|all-high>"
 description: Efficiency and performance review of JavaScript/TypeScript code. Runs the deterministic leancheck scanner (N+1 queries, await in loops, sequential awaits, unneeded "use client", fetch in useEffect, heavy imports, duplicate libraries, dead code, duplicated code), then reads the code to confirm or reject each finding and writes a ranked report. Use when the user runs /leancheck, or asks to find performance, efficiency, bloat or N+1 problems in a JS/TS, Node, Next.js, React, Drizzle or Prisma codebase.
 ---
 
@@ -8,7 +9,7 @@ description: Efficiency and performance review of JavaScript/TypeScript code. Ru
 Two modes:
 
 - **Report mode** — `/leancheck [path]`: scan, triage every finding by reading the code, write a ranked report. Never edits source code.
-- **Fix mode** — `/leancheck fix <ids…|all-high>`: see [Fix mode](#fix-mode).
+- **Fix mode** — `/leancheck fix <ids…|all-high>`: see [Fix mode](#fix-mode). With `fix` and nothing after it, ask which IDs to fix (or `all-high`); do not guess. Never fix anything that was not named.
 
 ## Guardrails (always)
 
@@ -34,7 +35,7 @@ Let `<target>` be the path argument (default `.`). All output goes to `.leanchec
 Run exactly (the env var lets a local build stand in for the published package):
 
 ```bash
-${LEANCHECK_CMD:-npx --yes leancheck@0.1.2} scan '<target>' --json --out .leancheck/findings.json >/dev/null
+${LEANCHECK_CMD:-npx --yes leancheck@0.1.3} scan '<target>' --json --out .leancheck/findings.json >/dev/null
 ```
 
 Allow a long Bash timeout for this command (10 minutes, 600000 ms): large repos can take minutes. Read the `--out` file, not stdout.

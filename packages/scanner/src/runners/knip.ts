@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { docsUrlFor } from "../constants.js";
@@ -32,7 +33,26 @@ const knipSchema = z.object({
 
 export type KnipOptions = RunnerOptions;
 
-export function normalizeKnip(json: unknown, repoRoot: string, ws: Workspace): RawFinding[] {
+// A type referenced again in its own file is part of that file's exported shape;
+// dropping `export` removes nothing at runtime, so it isn't worth a finding.
+function usedInOwnFile(source: string, name: string): boolean {
+  return (source.match(new RegExp(String.raw`\b${name}\b`, "g")) ?? []).length > 1;
+}
+
+function readSource(absPath: string): string {
+  try {
+    return readFileSync(absPath, "utf8");
+  } catch {
+    return "";
+  }
+}
+
+export function normalizeKnip(
+  json: unknown,
+  repoRoot: string,
+  ws: Workspace,
+  read: (absPath: string) => string = readSource,
+): RawFinding[] {
   const parsed = knipSchema.parse(json);
   const findings: RawFinding[] = [];
   const add = (
@@ -61,7 +81,9 @@ export function normalizeKnip(json: unknown, repoRoot: string, ws: Workspace): R
 
   for (const issue of parsed.issues) {
     for (const item of issue.files) add(item.name, 1, item.name, "Unused file", "low");
-    for (const item of [...issue.exports, ...issue.types]) {
+    const source = issue.types.length > 0 ? read(path.join(ws.absDir, issue.file)) : "";
+    const types = issue.types.filter((item) => !usedInOwnFile(source, item.name));
+    for (const item of [...issue.exports, ...types]) {
       add(issue.file, item.line ?? 1, item.name, `Unused export ${item.name}`, "low");
     }
     for (const item of [...issue.dependencies, ...issue.devDependencies]) {
