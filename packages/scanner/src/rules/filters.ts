@@ -65,9 +65,16 @@ function initializerReferences(declaration: SgNode): Set<string> {
 }
 
 // The rule matches the first of two adjacent await declarations; the second is its next sibling.
+// Guards must finish before later work starts, and imports or request helpers resolve at once,
+// so running these in parallel gains nothing.
+const ORDERED_FIRST_AWAIT =
+  /=\s*await\s+(import\b|(require|assert|ensure|verify|check)[A-Z]\w*\b|(auth|cookies|headers|params|searchParams)\b)/;
+const IMPORT_AWAIT = /=\s*await\s+import\b/;
+
 const sequentialAwaitsIndependent: FilterFn = (match) => {
   const second = match.next();
   if (!second) return false;
+  if (ORDERED_FIRST_AWAIT.test(match.text()) || IMPORT_AWAIT.test(second.text())) return false;
   const bound = bindingNames(match);
   return ![...initializerReferences(second)].some((name) => bound.has(name));
 };
@@ -254,10 +261,6 @@ const CLIENT_ONLY_FEATURES: Record<string, unknown>[] = [
       ],
     },
   },
-  {
-    kind: "jsx_attribute",
-    has: { kind: "property_identifier", regex: "^on[A-Z]" },
-  },
   { kind: "identifier", regex: BROWSER_GLOBALS.source },
   {
     kind: "class_heritage",
@@ -275,7 +278,24 @@ const CLIENT_ONLY_FEATURES: Record<string, unknown>[] = [
 // can run on the server, so the directive only ships extra JavaScript.
 const noClientOnlyFeatures: FilterFn = (_match, root) =>
   !root.find({ rule: { any: CLIENT_ONLY_FEATURES } }) &&
+  !hasEventHandlerProp(root) &&
   !isClientBoundaryWrapper(root);
+
+// The plain TypeScript grammar has no jsx_attribute kind and ast-grep rejects the rule outright.
+function hasEventHandlerProp(root: SgNode): boolean {
+  try {
+    return Boolean(
+      root.find({
+        rule: {
+          kind: "jsx_attribute",
+          has: { kind: "property_identifier", regex: "^on[A-Z]" },
+        },
+      }),
+    );
+  } catch {
+    return false;
+  }
+}
 
 const FRAMEWORK_SPECIFIER = /^(react|react-dom|next)(\/|$)/;
 const LOCAL_SPECIFIER = /^(\.|\/|@\/|~\/|#)/;

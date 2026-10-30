@@ -17,6 +17,18 @@ export const DEFAULT_IGNORES: readonly string[] = [
   "**/.wrangler/**",
   "**/*.min.js",
   "**/generated/**",
+  "**/*.test.*",
+  "**/*.spec.*",
+  "**/__tests__/**",
+  "**/test/**",
+  "**/tests/**",
+  "**/e2e/**",
+  "**/scripts/**",
+  "**/bench/**",
+  "**/benchmarks/**",
+  "**/migrations/**",
+  "**/seeds/**",
+  "**/seed.*",
 ];
 
 export const SEVERITY_ORDER: Record<Severity, number> = { high: 0, medium: 1, low: 2 };

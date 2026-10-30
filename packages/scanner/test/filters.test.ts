@@ -304,3 +304,30 @@ describe("onlyDerivedSetState", () => {
   test("drops a non-function first argument", () =>
     expect(keepEffect("useEffect(effect, []);")).toBe(false));
 });
+
+describe("sequentialAwaitsIndependent skips ordered first steps", () => {
+  test("drops a guard before the next await", () => {
+    expect(keep("const u = await requireUser(); const b = await g();")).toBe(false);
+    expect(keep("const s = await auth(); const b = await g();")).toBe(false);
+  });
+  test("drops dynamic imports", () => {
+    expect(keep('const a = await import("x"); const b = await g();')).toBe(false);
+    expect(keep('const a = await f(); const b = await import("y");')).toBe(false);
+  });
+  test("drops route params and request helpers", () => {
+    expect(keep("const { id } = await params; const b = await g();")).toBe(false);
+    expect(keep("const c = await cookies(); const b = await g();")).toBe(false);
+  });
+  test("keeps ordinary independent calls", () => {
+    expect(keep("const a = await listBooks(); const b = await countUsers();")).toBe(true);
+  });
+});
+
+describe("noClientOnlyFeatures on non-JSX grammars", () => {
+  test("does not throw on a .ts file", () => {
+    const root = parse(Lang.TypeScript, '"use client";\nexport const a = 1;\n').root();
+    const filter = FILTERS.noClientOnlyFeatures;
+    if (!filter) throw new Error("filter missing");
+    expect(filter(root, root)).toBe(true);
+  });
+});

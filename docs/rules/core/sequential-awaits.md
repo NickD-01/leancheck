@@ -1,6 +1,6 @@
 # core/sequential-awaits
 
-Independent awaits run back to back. Default severity: medium.
+Independent awaits run back to back. Default severity: low.
 
 ## Why
 

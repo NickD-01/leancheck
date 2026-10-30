@@ -16,3 +16,17 @@ Raw scanner precision was about 45%, mostly because of unused type exports that 
 The confirmed findings were mostly low severity, as expected for a small, carefully written codebase: one unused dependency, two unbounded list queries, one write loop in a webhook handler, one duplicated schema block, and unnecessary exports. One medium-severity finding was fixable in a single line.
 
 Triage followed the skill's report mode inside Claude Code with the published 0.1.2 package. The headless `claude -p` path and fix mode on a real application have not been tested; fix mode has only run in simulations on `fixtures/planted`.
+
+## Second run: a public vibe-coded app
+
+Next.js and Prisma, 283 TypeScript files, 28,000 lines. Configuration files were removed and dependencies were not installed for safety, so the dead-code results are not reliable and are left out here.
+
+Against a separate Claude code review of the same repository (12 findings):
+
+| | leancheck | Claude review |
+|---|---|---|
+| Cost | 22 seconds, no tokens | about 100 seconds, about 140,000 tokens |
+| Found by both | 2 problem areas | 2 problem areas |
+| Found only by this side | 5 N+1 loops in push notifications, 1 write loop | 10 areas, mostly unbounded reads and full-history recomputation |
+
+Of 11 high-severity findings, 9 looked real on inspection, after one deliberate fallback was rejected and one unclear case set aside. Prisma has no unbounded-query rule yet, which is the largest gap. leancheck complements a review; it does not replace one.

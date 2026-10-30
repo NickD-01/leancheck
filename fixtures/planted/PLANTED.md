@@ -9,7 +9,7 @@ snapshots the scanner output for this repo.
 | --- | --- | --- | --- |
 | core/await-in-loop | src/lib/notify.ts:5 | real | independent emails sent one at a time |
 | core/await-in-loop | src/lib/export.ts:9 | trap | cursor pagination: each request needs the previous cursor (flagged) |
-| core/await-in-loop | scripts/seed.ts:18 | trap | one-off seed script, cold path (flagged) |
+| core/await-in-loop | scripts/seed.ts:18 | trap | one-off seed script, cold path (not flagged: `scripts/` is ignored by default) |
 | core/heavy-import | src/lib/stats.ts:1 | real | whole `lodash` imported for `sum`/`max` |
 | core/heavy-import | src/lib/dates.ts:2 | real | whole `moment` imported |
 | core/json-deep-clone | src/lib/cart.ts:5 | real | JSON round-trip instead of `structuredClone` |

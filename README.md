@@ -74,7 +74,7 @@ Each rule has a page under [`docs/rules/`](docs/rules) with a bad and good examp
 | Rule | Severity | What it finds |
 | --- | --- | --- |
 | [core/await-in-loop](docs/rules/core/await-in-loop.md) | medium | `await` in a loop body |
-| [core/sequential-awaits](docs/rules/core/sequential-awaits.md) | medium | independent awaits run back to back |
+| [core/sequential-awaits](docs/rules/core/sequential-awaits.md) | low | independent awaits run back to back |
 | [core/sync-io-in-handler](docs/rules/core/sync-io-in-handler.md) | high | `*Sync` filesystem calls in async functions |
 | [core/lookup-in-loop](docs/rules/core/lookup-in-loop.md) | medium | `find`/`includes`/`indexOf` on an array inside a loop |
 | [core/json-deep-clone](docs/rules/core/json-deep-clone.md) | medium | `JSON.parse(JSON.stringify(x))` |
@@ -117,7 +117,7 @@ Optional `leancheck.config.json` in the scanned root. Unknown keys are an error 
 | `packs` | `{ core, drizzle, prisma, nextjs, react: boolean }` | all detected packs on | Set a pack to `false` to turn it off; packs are never forced on |
 | `jscpd.minLines` | integer | `10` | Minimum duplicated block size |
 
-Always ignored: `**/node_modules/**`, `**/.next/**`, `**/dist/**`, `**/build/**`, `**/.leancheck/**`, `**/*.generated.*`, `**/*.d.ts`, `**/coverage/**`, `**/out/**`, `**/.vercel/**`, `**/.turbo/**`, `**/.output/**`, `**/.open-next/**`, `**/.wrangler/**`, `**/*.min.js`, `**/generated/**`.
+Always ignored: `**/node_modules/**`, `**/.next/**`, `**/dist/**`, `**/build/**`, `**/.leancheck/**`, `**/*.generated.*`, `**/*.d.ts`, `**/coverage/**`, `**/out/**`, `**/.vercel/**`, `**/.turbo/**`, `**/.output/**`, `**/.open-next/**`, `**/.wrangler/**`, `**/*.min.js`, `**/generated/**`, `**/*.test.*`, `**/*.spec.*`, `**/__tests__/**`, `**/test/**`, `**/tests/**`, `**/e2e/**`, `**/scripts/**`, `**/bench/**`, `**/benchmarks/**`, `**/migrations/**`, `**/seeds/**`, `**/seed.*`.
 
 ### Ignore comments
 

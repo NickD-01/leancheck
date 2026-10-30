@@ -1,7 +1,7 @@
 id: core/sequential-awaits
 pack: core
 category: perf
-severity: medium
+severity: low
 confidence: medium
 message: Two independent awaits run back to back; the second waits for the first needlessly.
 fixHint: Start both and await together, e.g. const [a, b] = await Promise.all([f(), g()]).
