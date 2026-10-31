@@ -71,3 +71,17 @@ Run on a copy of the application from the first run, with six findings selected.
 | Failed | 0 |
 
 Typecheck and all 39 tests stayed green, but tests covered only one of the five fixes. Reading the diffs showed the gates were not enough: a `limit: 50` broke a customer-name lookup built from the same rows, which no test covered. Version 0.1.5 therefore skips behaviour changes on untested code.
+
+## Fifth run: adding a targeted review
+
+The skill gained a checklist-driven review (`references/review.md`). On a first unseen app it reached 3 of 12 review findings. The checklist then gained generic items for indexes, race conditions, SSRF and repeated per-request queries, plus a minimum of 20 files.
+
+It was then tested on a second unseen app, next to two independent plain reviews, to learn what a realistic score is. These overlaps are hand-judged on one app.
+
+| Compared with | Plain review A | Plain review B | leancheck |
+|---|---|---|---|
+| Findings of review A also reached | n/a | 10 of 11 | 9 of 11 |
+| Findings of review B also reached | 9 of 12 | n/a | 7 of 12 |
+| Tokens | 159,000 | 159,000 | 177,000 |
+
+A second plain review reaches about 83% of the first; leancheck reaches about 70%. leancheck also reported 4 issues neither review named. Its top 10 is mostly medium severity. It costs about 11% more tokens than a plain review, so it doesn't yet save tokens.
