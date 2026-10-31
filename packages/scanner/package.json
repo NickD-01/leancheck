@@ -1,6 +1,6 @@
 {
   "name": "leancheck",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "JS/TS efficiency scanner: performance, bloat and duplication findings",
   "license": "MIT",
   "repository": {

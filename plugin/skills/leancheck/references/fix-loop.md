@@ -12,7 +12,7 @@
 - **`<scan>`** means, with the same env-var fallback as report mode:
 
   ```bash
-  ${LEANCHECK_CMD:-npx --yes leancheck@0.1.4} scan '<target>' --json --out '<file>' >/dev/null
+  ${LEANCHECK_CMD:-npx --yes leancheck@0.1.5} scan '<target>' --json --out '<file>' >/dev/null
   ```
 
   Read the `--out` file, not stdout. Any non-zero exit is a scanner failure. Never write to `findingsFile`: the IDs the user chose refer to it.
@@ -75,7 +75,9 @@ Resolve each selected finding `F` to a current location: entries in `fix-base.js
 
 ## Step 5 — Consent
 
-Ask everything in one message, before any edit:
+First skip every finding with `behaviorChange: true` and `testCovered: false`, with the reason `behaviour change without tests`, even if the user confirmed it: a typecheck cannot see a changed result, and nothing would catch a mistake. Show its `fix` in the summary so the user can apply it by hand.
+
+Ask everything else in one message, before any edit:
 
 1. **`uncertain` named findings** — each one with what would settle it.
 2. **`behaviorChange: true` findings** — each one by ID with what changes. The user must accept each individually; `all-high`, "fix everything" and naming the ID on the command line do not count.
@@ -96,7 +98,7 @@ One finding at a time. Start with `FIXFILES` and `CREATED` empty.
 
    Apply the fix. Add every path you modify, create or delete to `FIXFILES`, relative to `<target>`, and every path you create to `CREATED` as well, at the moment you create it. If a path outside this plan turns out to be needed, the same checks apply before touching it. If `FIXFILES` is empty, or `<git> status --porcelain -- <FIXFILES>` prints nothing: failed (`no change made`).
 3. **Typecheck** in the finding's workspace.
-4. **Tests.** Skip only when there is no test script. Otherwise run related tests for `FIXFILES`. Use the full suite instead when there is no related mode, when the runner reports no tests found (both Vitest and Jest exit non-zero then; that is not a failure), or when `FIXFILES` includes a deleted file.
+4. **Tests.** Skip only when there is no test script. Otherwise run related tests for `FIXFILES`. Use the full suite instead when there is no related mode, when the runner reports no tests found (whatever its exit code; this is neither a pass nor a failure), or when `FIXFILES` includes a deleted file.
 5. **Rule check.** Run `<scan>` with `--out '<lc>/rescan.json'`, then pass only if all of these hold:
    - The scanner exited 0.
    - `rescan.json` `runnerErrors` has no entry for the rule's runner in `F`'s workspace (ignore one whose `file` is outside `FIXFILES` plus `F`'s `file`). Runners: `core/dead-code` is `knip`, `core/duplicate-code` is `jscpd`, `core/duplicate-libraries` is `deps`, all others `astgrep`. A crashed runner, or a parse error in the fixed file, also yields no finding, so its silence proves nothing.

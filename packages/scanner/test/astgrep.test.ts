@@ -89,6 +89,17 @@ describe("runAstGrep", () => {
     expect(findings).toHaveLength(6);
   });
 
+  test("scans JSX with a bare ampersand instead of skipping the file", async () => {
+    const source = [
+      "export const A = () => <p>Q & A</p>;",
+      "export const b = JSON.parse(JSON.stringify({}));",
+    ].join("\n");
+    const { root, ws } = setup({ "src/a.tsx": source });
+    const { findings, errors } = await runAstGrep(root, ws, await cloneRules(), []);
+    expect(errors).toEqual([]);
+    expect(findings).toHaveLength(1);
+  });
+
   test("skips unparseable file and records a runnerError", async () => {
     const { root, ws } = setup({ "src/ok.ts": CLONE, "src/broken.ts": "const = = (;\n" });
     const { findings, errors } = await runAstGrep(root, ws, await cloneRules(), []);

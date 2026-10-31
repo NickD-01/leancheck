@@ -36,3 +36,38 @@ Of 11 high-severity findings, 9 looked real on inspection, after one deliberate 
 The same app, compared with the same review. Of the 15 locations the review named, leancheck now reaches 14, within ten lines; 13 come from the new rule. The one miss is repeated counting in a sync function that runs on every action.
 
 That recall has a price. The rule reports 76 places, and in a sample of 14 about 6 mattered; the rest were small tables. leancheck finds where to look, but triage still has to decide what matters. The review's ranking was better, and it explained causes such as filtering in JavaScript after loading everything.
+
+## Fourth run: blind test on two unseen apps
+
+Two public vibe-coded apps were chosen before scanning, and leancheck 0.1.4 was frozen. A separate review and a separate triage each worked without seeing the other's result. Dead-code findings are left out because configuration files were removed and dependencies were not installed.
+
+| | App with Drizzle | App with Prisma |
+|---|---|---|
+| Size | 3,700 lines | 18,200 lines |
+| Findings triaged | 25 | 40 |
+| Confirmed, uncertain, rejected | 16, 0, 9 | 27, 1, 12 |
+| Review findings also reached by leancheck | 1 of 8, partly | 4 of 10 |
+
+On unseen code leancheck reached 5 of 18 review findings, about 28%. The misses were mostly outside its rules: missing rate limits and auth, request storms in the editor, oversized payloads, and bundle size. Only 3 of 43 confirmed findings were above low severity, and all 3 matched review findings. leancheck found duplicated code and unneeded column selection that the reviews did not report, and triage correctly rejected a custom async `writeFileSync` wrapper.
+
+## Triage on 76 `findMany` findings
+
+| Verdict | Count |
+|---|---|
+| Confirmed | 21 |
+| Uncertain | 10 |
+| Rejected | 45 |
+
+Of 18 places named by the earlier review, 15 were confirmed, 3 were uncertain and none were rejected. Four of its top five matched the review's main problems. The triage did not see that review.
+
+## Fix mode on a real application
+
+Run on a copy of the application from the first run, with six findings selected.
+
+| Outcome | Count |
+|---|---|
+| Fixed and committed | 5 |
+| Skipped (dependency change) | 1 |
+| Failed | 0 |
+
+Typecheck and all 39 tests stayed green, but tests covered only one of the five fixes. Reading the diffs showed the gates were not enough: a `limit: 50` broke a customer-name lookup built from the same rows, which no test covered. Version 0.1.5 therefore skips behaviour changes on untested code.

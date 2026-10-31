@@ -83,7 +83,7 @@ Reject when:
 
 Mark `uncertain` when growth depends on production data you cannot see; say what row count would make it a problem.
 
-Adding a limit changes results: `behaviorChange: true`. The fix should name a limit and how the caller pages (cursor or offset). Effort `M` if callers must handle pagination.
+Adding a limit changes results: `behaviorChange: true`. Trace every consumer of the rows first and name in `fix` what breaks: a lookup map built from the same rows silently loses entries once the list is cut. The fix should name a limit and how the caller pages (cursor or offset). Effort `M` if callers must handle pagination.
 
 ### drizzle/select-all-columns
 

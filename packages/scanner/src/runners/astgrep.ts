@@ -65,7 +65,8 @@ function collect(rule: RuleDef, root: SgNode): Match[] {
 function parseRoot(source: string, lang: RuleLang): SgNode {
   const root = parse(NAPI_LANG[lang], source).root();
   // tree-sitter recovers from syntax errors, so an ERROR node is the only failure signal.
-  if (root.find({ rule: { kind: "ERROR" } })) throw new ParseError("syntax error");
+  // A bare & in JSX text is valid JSX that the grammar still reports as ERROR.
+  if (root.find({ rule: { kind: "ERROR", not: { regex: "^&" } } })) throw new ParseError("syntax error");
   return root;
 }
 

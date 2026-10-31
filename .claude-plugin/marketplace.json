@@ -6,7 +6,7 @@
       "name": "leancheck",
       "source": "./plugin",
       "description": "Finds efficiency problems in JS/TS codebases with a deterministic scanner, triages them with Claude, and fixes approved findings behind a test gate.",
-      "version": "0.1.4",
+      "version": "0.1.5",
       "license": "MIT"
     }
   ]
